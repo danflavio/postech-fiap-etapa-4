@@ -1,13 +1,12 @@
 import React from "react";
-import {View, Text, FlashList, TextInput, StyleSheet} from "react-native";
-
+import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 // Dados estáticos temporários para testarmos o visual
 const posts = [
   { id: '1', title: 'Primeiro Post', author: 'Professor A', description: 'Resumo do post 1' },
   { id: '2', title: 'Segundo Post', author: 'Professor B', description: 'Resumo do post 2' },
 ];
 
-export default function Home() {
+export default function Home({ navigation }) { // <-- Adicione navigation aqui
   return (
     <View style={styles.container}>
       <TextInput style={styles.input} placeholder="Buscar posts..." />
@@ -15,11 +14,11 @@ export default function Home() {
         data={posts}
         keyExtractor={item => item.id}
         renderItem={({ item }) => (
-          <View style={styles.card}>
+          <TouchableOpacity style={styles.card} onPress={() => navigation.navigate('PostDetail')}>
             <Text style={styles.title}>{item.title}</Text>
             <Text>Autor: {item.author}</Text>
             <Text>{item.description}</Text>
-          </View>
+          </TouchableOpacity>
         )}
       />
     </View>

@@ -4,59 +4,34 @@
 > **Curso:** Pós-Tech FIAP | **Etapa:** 4  
 > **Autor:** [Dan Flavio](https://github.com/danflavio)
 
----
-
-## Sobre o Projeto
-
-<!-- Descreva aqui o objetivo do projeto, o problema que ele resolve e o contexto dentro da etapa 4 do curso PostTech FIAP. -->
-
-Este repositório contém o projeto referente à **Etapa 4** da pós-graduação PostTech FIAP.  
-O objetivo é desenvolver uma aplicação full-stack que aplique os conceitos aprendidos ao longo do curso, incluindo arquitetura de software, boas práticas de desenvolvimento, testes e deploy.
-
----
-
-## Funcionalidades
-
-<!-- Liste as principais funcionalidades da aplicação. -->
-
-- [ ] Funcionalidade 1
-- [ ] Funcionalidade 2
-- [ ] Funcionalidade 3
+Aplicativo **mobile** de leitura de blogs desenvolvido com **React Native + Expo**, como projeto da Etapa 4 da pós-graduação Postech FIAP.
 
 ---
 
 ## Tech Stack
 
-<!-- Preencha com as tecnologias utilizadas no projeto. -->
+**Mobile:** React Native 0.81 · Expo SDK 54 · Expo Router · TypeScript  
+**Navegação:** React Navigation (Native Stack + Bottom Tabs)  
+**Animações:** react-native-reanimated · react-native-gesture-handler  
+**Linting:** ESLint com configuração oficial do Expo  
+**Plataformas:** Android · iOS · Web
 
-**Backend:**
-- Linguagem: `--`
-- Framework: `--`
-- Banco de Dados: `--`
-- ORM: `--`
+---
 
-**Frontend:**
-- Framework: `--`
-- Estilização: `--`
+## Funcionalidades (em construção)
 
-**Infraestrutura:**
-- Containerização: Docker
-- Cloud/Deploy: `--`
-
-**Ferramentas:**
-- Versionamento: Git & GitHub
-- CI/CD: `--`
+- [x] Catálogo de posts com lista e busca
+- [ ] Detalhes do post
+- [ ] Integração com API backend
+- [ ] Autenticação
 
 ---
 
 ## Pré-requisitos
 
-Antes de começar, você vai precisar ter instalado em sua máquina:
-
-- [Git](https://git-scm.com)
-- [Node.js](https://nodejs.org/) (v18+)
-- [Docker](https://www.docker.com/) (opcional, mas recomendado)
-- Gerenciador de pacotes: `npm`, `yarn` ou `pnpm`
+- Node.js v18+
+- npm / yarn
+- Expo Go (dispositivo físico) ou emulador Android/iOS
 
 ---
 
@@ -65,103 +40,51 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
 ```bash
 # Clone o repositório
 git clone https://github.com/danflavio/postech-fiap-etapa-4.git
-
-# Acesse a pasta do projeto
-cd postech-fiap-etapa-4
+cd postech-fiap-etapa-4/blog-mobile
 
 # Instale as dependências
 npm install
 
-# Configure as variáveis de ambiente
-cp .env.example .env
-
-# Inicie a aplicação
-npm run dev
+# Inicie o servidor de desenvolvimento
+npx expo start
 ```
 
-Com Docker:
-
-```bash
-docker compose up -d
-```
+No terminal, pressione `a` (Android), `i` (iOS) ou `w` (Web) para abrir o app.
 
 ---
 
 ## Estrutura do Projeto
 
-<!-- Atualize conforme a estrutura real do projeto. -->
-
 ```
-├── src/              # Código-fonte
-│   ├── controllers/  # Controladores
-│   ├── models/       # Modelos/DTOs
-│   ├── routes/       # Rotas
-│   ├── services/     # Lógica de negócio
-│   └── shared/       # Utilitários e tipos comuns
-├── tests/            # Testes automatizados
-├── docker/           # Arquivos de configuração Docker
-├── .env.example      # Exemplo de variáveis de ambiente
-└── docker-compose.yml
-```
-
----
-
-## Variáveis de Ambiente
-
-```env
-# Aplicação
-PORT=3000
-NODE_ENV=development
-
-# Banco de Dados
-DATABASE_URL=postgresql://user:password@localhost:5432/dbname
-
-# Autenticação
-JWT_SECRET=your-secret-key
-```
-
-> Crie um arquivo `.env` na raiz do projeto com base no `.env.example`.
-
----
-
-## Scripts Disponíveis
-
-| Comando         | Descrição                    |
-|-----------------|------------------------------|
-| `npm run dev`   | Inicia o servidor em dev     |
-| `npm run build` | Compila o projeto            |
-| `npm start`     | Inicia em produção           |
-| `npm test`      | Executa os testes            |
-| `npm run lint`  | Executa o linter             |
-
----
-
-## Testes
-
-```bash
-# Executa todos os testes
-npm test
-
-# Executa testes com cobertura
-npm run test:coverage
+postech-fiap-etapa-4/
+└── blog-mobile/              # Aplicação mobile
+    ├── app/                  # Expo Router (roteamento baseado em arquivos)
+    │   ├── _layout.tsx       # Layout raiz (Stack navigator)
+    │   └── (tabs)/           # Abas: Home e Explore
+    ├── src/
+    │   ├── pages/            # Telas do blog (Home, PostDetail)
+    │   ├── components/       # Componentes reutilizáveis
+    │   ├── context/          # Contextos React
+    │   └── services/         # Integrações com backend (futuro)
+    ├── components/           # Componentes de UI compartilhados
+    ├── constants/            # Tema (cores, fontes)
+    └── hooks/                # Hooks personalizados
 ```
 
 ---
 
-## Deploy
+## Scripts (blog-mobile)
 
-<!-- Descreva o processo de deploy, se aplicável. -->
-
-Instruções de deploy serão definidas conforme o avanço do projeto.
-
----
-
-## Contribuição
-
-Este é um projeto acadêmico. Contribuições não são esperadas, mas sugestões são bem-vindas via [issues](https://github.com/danflavio/postech-fiap-etapa-4/issues).
+| Comando              | Descrição                     |
+|----------------------|-------------------------------|
+| `npm start`          | Inicia o Expo dev server      |
+| `npm run android`    | Inicia no Android             |
+| `npm run ios`        | Inicia no iOS                 |
+| `npm run web`        | Inicia no navegador           |
+| `npm run lint`       | Executa o linter              |
 
 ---
 
 ## Licença
 
-Distribuído sob a licença MIT. Veja `LICENSE` para mais informações.
+Distribuído sob a licença MIT.
