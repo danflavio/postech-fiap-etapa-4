@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { useAuthGuard } from '../context/useAuthGuard';
 import api from '../services/api';
 
 export default function EditPost({ route, navigation }) {
+  useAuthGuard(navigation);
   const { id } = route.params;
   const [title, setTitle] = useState('');
   const [author, setAuthor] = useState('');

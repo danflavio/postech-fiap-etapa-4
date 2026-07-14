@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { useAuth } from '../context/AuthContext';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
-  const { login } = useAuth();
+  const { isAuthenticated, login } = useAuth();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigation.reset({ index: 0, routes: [{ name: 'Admin' }] });
+    }
+  }, [isAuthenticated]);
 
   async function handleLogin() {
     try {
       await login(email.trim(), senha);
-      navigation.reset({ index: 0, routes: [{ name: 'Admin' }] });
     } catch {
       Alert.alert('Erro', 'E-mail ou senha inválidos!');
     }

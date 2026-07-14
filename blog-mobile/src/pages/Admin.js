@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
@@ -7,7 +7,13 @@ import api from '../services/api';
 
 export default function Admin({ navigation }) {
   const [posts, setPosts] = useState([]);
-  const { logout } = useAuth();
+  const { isAuthenticated, logout } = useAuth();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+    }
+  }, [isAuthenticated]);
 
   useFocusEffect(
     useCallback(() => {
@@ -36,7 +42,6 @@ export default function Admin({ navigation }) {
 
   function handleLogout() {
     logout();
-    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
   }
 
   return (

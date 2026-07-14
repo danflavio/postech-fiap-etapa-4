@@ -10,50 +10,32 @@ import Login from './src/pages/Login';
 import TeacherList from './src/pages/TeacherList';
 import CreateTeacher from './src/pages/CreateTeacher';
 import EditTeacher from './src/pages/EditTeacher';
+import TeacherDetail from './src/pages/TeacherDetail';
 import StudentList from './src/pages/StudentList';
 import CreateStudent from './src/pages/CreateStudent';
 import EditStudent from './src/pages/EditStudent';
+import StudentDetail from './src/pages/StudentDetail';
 import Admin from './src/pages/Admin';
 
 const Stack = createNativeStackNavigator();
 
-function PublicScreens() {
+function RootNavigator() {
   return (
-    <Stack.Group>
+    <Stack.Navigator>
       <Stack.Screen name="Home" component={Home} options={{ title: 'Lista de Posts' }} />
       <Stack.Screen name="PostDetail" component={PostDetail} options={{ title: 'Leitura do Post' }} />
       <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-    </Stack.Group>
-  );
-}
-
-function ProtectedScreens() {
-  return (
-    <Stack.Group>
       <Stack.Screen name="Admin" component={Admin} options={{ title: 'Administração' }} />
       <Stack.Screen name="CreatePost" component={CreatePost} options={{ title: 'Criação de Posts' }} />
       <Stack.Screen name="EditPost" component={EditPost} options={{ title: 'Edição de Posts' }} />
       <Stack.Screen name="TeacherList" component={TeacherList} options={{ title: 'Professores' }} />
       <Stack.Screen name="CreateTeacher" component={CreateTeacher} options={{ title: 'Cadastrar Professor' }} />
       <Stack.Screen name="EditTeacher" component={EditTeacher} options={{ title: 'Editar Professor' }} />
+      <Stack.Screen name="TeacherDetail" component={TeacherDetail} options={{ title: 'Detalhes do Professor' }} />
       <Stack.Screen name="StudentList" component={StudentList} options={{ title: 'Estudantes' }} />
       <Stack.Screen name="CreateStudent" component={CreateStudent} options={{ title: 'Cadastrar Estudante' }} />
       <Stack.Screen name="EditStudent" component={EditStudent} options={{ title: 'Editar Estudante' }} />
-    </Stack.Group>
-  );
-}
-
-function RootNavigator() {
-  const { isAuthenticated } = useAuth();
-
-  return (
-    <Stack.Navigator>
-      <Stack.Group>
-        <Stack.Screen name="Home" component={Home} options={{ title: 'Lista de Posts' }} />
-        <Stack.Screen name="PostDetail" component={PostDetail} options={{ title: 'Leitura do Post' }} />
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
-      </Stack.Group>
-      {isAuthenticated && <ProtectedScreens />}
+      <Stack.Screen name="StudentDetail" component={StudentDetail} options={{ title: 'Detalhes do Estudante' }} />
     </Stack.Navigator>
   );
 }

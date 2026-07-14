@@ -29,10 +29,10 @@ export default function PostDetail({ route, navigation }) {
       <Text style={styles.content}>{post.content}</Text>
       
       <TouchableOpacity
-        style={styles.editButton}
-        onPress={() => navigation.navigate('EditPost', { id: post.id })}
+        style={styles.closeButton}
+        onPress={() => navigation.goBack()}
       >
-        <Text style={styles.editButtonText}>Editar Postagem</Text>
+        <Text style={styles.closeButtonText}>Fechar</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -43,14 +43,14 @@ const styles = StyleSheet.create({
   title: { fontWeight: 'bold', fontSize: 24, marginBottom: 10, color: '#4A4A4A' },
   author: { fontStyle: 'italic', color: '#8B8B8B', marginBottom: 20 },
   content: { fontSize: 16, lineHeight: 26, color: '#555' },
-  editButton: {
+  closeButton: {
     marginTop: 30,
-    backgroundColor: '#85B4D1',
+    backgroundColor: '#B5BEC6',
     paddingVertical: 14,
     borderRadius: 10,
     alignItems: 'center',
   },
-  editButtonText: {
+  closeButtonText: {
     color: '#fff',
     fontSize: 16,
     fontWeight: '600',

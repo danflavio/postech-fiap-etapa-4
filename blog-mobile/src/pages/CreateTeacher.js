@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { useAuthGuard } from '../context/useAuthGuard';
 import api from '../services/api';
 
 export default function CreateTeacher({ navigation }) {
+  useAuthGuard(navigation);
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');

@@ -2,9 +2,11 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuthGuard } from '../context/useAuthGuard';
 import api from '../services/api';
 
 export default function StudentList({ navigation }) {
+  useAuthGuard(navigation);
   const [students, setStudents] = useState([]);
 
   useFocusEffect(
@@ -40,7 +42,10 @@ export default function StudentList({ navigation }) {
         style={{ marginTop: 20 }}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={styles.name}>{item.nome}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('StudentDetail', { student: item })}>
+              <Text style={styles.name}>{item.nome}</Text>
+              <Text style={styles.email}>{item.email}</Text>
+            </TouchableOpacity>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('EditStudent', { id: item.id })}>
                 <Ionicons name="create-outline" size={22} color="#85B4D1" />
@@ -61,6 +66,7 @@ const styles = StyleSheet.create({
   addButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#EDC28A', paddingVertical: 12, borderRadius: 10 },
   addButtonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
   card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 10, borderRadius: 10, backgroundColor: '#fff' },
-  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#4A4A4A' },
+  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 3, color: '#4A4A4A' },
+  email: { fontSize: 14, color: '#8B8B8B', marginBottom: 12 },
   buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 24 }
 });

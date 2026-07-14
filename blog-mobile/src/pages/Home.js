@@ -1,11 +1,13 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
 export default function Home({ navigation }) {
   const [posts, setPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const { isAuthenticated } = useAuth();
 
   useFocusEffect(
     useCallback(() => {
@@ -35,9 +37,15 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
-        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
-          <Text style={styles.loginButtonText}>Login do Professor</Text>
-        </TouchableOpacity>
+        {isAuthenticated ? (
+          <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Admin')}>
+            <Text style={styles.loginButtonText}>Acessar Painel</Text>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
+            <Text style={styles.loginButtonText}>Login do Professor</Text>
+          </TouchableOpacity>
+        )}
       </View>
       
       <TextInput
