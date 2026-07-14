@@ -1,27 +1,31 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity, Button } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, FlatList, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
 
 export default function Home({ navigation }) {
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    async function fetchPosts() {
-      try {
-        const response = await api.get('/posts');
-        setPosts(response.data);
-      } catch (error) {
-        console.error("Erro ao buscar posts:", error);
+  useFocusEffect(
+    useCallback(() => {
+      async function fetchPosts() {
+        try {
+          const response = await api.get('/posts');
+          setPosts(response.data);
+        } catch (error) {
+          console.error("Erro ao buscar posts:", error);
+        }
       }
-    }
-    fetchPosts();
-  }, []);
+      fetchPosts();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
-      <View style={{ marginBottom: 20 }}>
-        {/* Apenas um botão discreto para a área restrita */}
-        <Button title="Login do Professor" color="#333" onPress={() => navigation.navigate('Login')} />
+      <View style={styles.topBar}>
+        <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate('Login')}>
+          <Text style={styles.loginButtonText}>Login do Professor</Text>
+        </TouchableOpacity>
       </View>
       
       <TextInput style={styles.input} placeholder="Buscar posts..." />
@@ -45,9 +49,12 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 20, borderRadius: 8 },
-  card: { padding: 15, borderWidth: 1, borderColor: '#eee', marginBottom: 15, borderRadius: 8, backgroundColor: '#f9f9f9' },
-  title: { fontWeight: 'bold', fontSize: 18, marginBottom: 5 },
-  author: { color: '#666', marginBottom: 10 }
+  container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
+  topBar: { flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 15 },
+  loginButton: { backgroundColor: '#B5BEC6', paddingVertical: 10, paddingHorizontal: 18, borderRadius: 8 },
+  loginButtonText: { color: '#fff', fontWeight: '600', fontSize: 14 },
+  input: { borderWidth: 1, borderColor: '#D6CFC7', backgroundColor: '#fff', padding: 12, marginBottom: 20, borderRadius: 10 },
+  card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 15, borderRadius: 10, backgroundColor: '#fff' },
+  title: { fontWeight: 'bold', fontSize: 18, marginBottom: 5, color: '#4A4A4A' },
+  author: { color: '#8B8B8B', marginBottom: 10 }
 });

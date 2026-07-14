@@ -39,15 +39,15 @@ export default function PostDetail({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  title: { fontWeight: 'bold', fontSize: 24, marginBottom: 10 },
-  author: { fontStyle: 'italic', color: 'gray', marginBottom: 20 },
-  content: { fontSize: 16, lineHeight: 24 },
+  container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
+  title: { fontWeight: 'bold', fontSize: 24, marginBottom: 10, color: '#4A4A4A' },
+  author: { fontStyle: 'italic', color: '#8B8B8B', marginBottom: 20 },
+  content: { fontSize: 16, lineHeight: 26, color: '#555' },
   editButton: {
     marginTop: 30,
-    backgroundColor: '#007AFF',
-    paddingVertical: 12,
-    borderRadius: 8,
+    backgroundColor: '#85B4D1',
+    paddingVertical: 14,
+    borderRadius: 10,
     alignItems: 'center',
   },
   editButtonText: {

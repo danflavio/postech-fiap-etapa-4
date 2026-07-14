@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
 
 export default function StudentList({ navigation }) {
   const [students, setStudents] = useState([]);
 
-  useEffect(() => { fetchStudents(); }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchStudents();
+    }, [])
+  );
 
   async function fetchStudents() {
     try {
@@ -23,7 +29,11 @@ export default function StudentList({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Button title="Cadastrar Novo Aluno" onPress={() => navigation.navigate('CreateStudent')} />
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CreateStudent')}>
+        <Ionicons name="person-add-outline" size={20} color="#fff" />
+        <Text style={styles.addButtonText}>Cadastrar Novo Aluno</Text>
+      </TouchableOpacity>
+
       <FlatList
         data={students}
         keyExtractor={item => String(item.id)}
@@ -33,10 +43,10 @@ export default function StudentList({ navigation }) {
             <Text style={styles.name}>{item.nome}</Text>
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('EditStudent', { id: item.id })}>
-                <Text style={styles.editButton}>Editar</Text>
+                <Ionicons name="create-outline" size={22} color="#85B4D1" />
               </TouchableOpacity>
               <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                <Text style={styles.deleteButton}>Excluir</Text>
+                <Ionicons name="trash-outline" size={22} color="#D9ACB5" />
               </TouchableOpacity>
             </View>
           </View>
@@ -47,10 +57,10 @@ export default function StudentList({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  card: { padding: 15, borderWidth: 1, borderColor: '#eee', marginBottom: 10, borderRadius: 8, backgroundColor: '#f9f9f9' },
-  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#333' },
-  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 20 },
-  editButton: { color: '#007AFF', fontWeight: 'bold', fontSize: 16 },
-  deleteButton: { color: '#FF3B30', fontWeight: 'bold', fontSize: 16 }
+  container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
+  addButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#EDC28A', paddingVertical: 12, borderRadius: 10 },
+  addButtonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 10, borderRadius: 10, backgroundColor: '#fff' },
+  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#4A4A4A' },
+  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 24 }
 });

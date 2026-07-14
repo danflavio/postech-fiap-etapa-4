@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 
 export default function Login({ navigation }) {
   const [username, setUsername] = useState('');
@@ -33,17 +33,23 @@ export default function Login({ navigation }) {
         secureTextEntry 
       />
       
-      <Button title="Entrar" onPress={handleLogin} />
+      <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+        <Text style={styles.loginButtonText}>Entrar</Text>
+      </TouchableOpacity>
       
-      <View style={{ marginTop: 15 }}>
-        <Button title="Voltar para a Home" color="#666" onPress={() => navigation.navigate('Home')} />
-      </View>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+        <Text style={styles.backButtonText}>Voltar para a Home</Text>
+      </TouchableOpacity>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#fff' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center' },
-  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 15, borderRadius: 8 }
+  container: { flex: 1, justifyContent: 'center', padding: 20, backgroundColor: '#F5F0EB' },
+  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20, textAlign: 'center', color: '#4A4A4A' },
+  input: { borderWidth: 1, borderColor: '#D6CFC7', backgroundColor: '#fff', padding: 12, marginBottom: 15, borderRadius: 10 },
+  loginButton: { backgroundColor: '#85B4D1', paddingVertical: 14, borderRadius: 10, alignItems: 'center' },
+  loginButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
+  backButton: { marginTop: 15, paddingVertical: 14, borderRadius: 10, alignItems: 'center', borderWidth: 1, borderColor: '#B5BEC6' },
+  backButtonText: { color: '#6B6B6B', fontSize: 15, fontWeight: '600' }
 });

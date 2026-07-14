@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, Button, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
 
 export default function TeacherList({ navigation }) {
   const [teachers, setTeachers] = useState([]);
 
-  useEffect(() => {
-    fetchTeachers();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchTeachers();
+    }, [])
+  );
 
-  // Busca a lista de professores na sua API
   async function fetchTeachers() {
     try {
       const response = await api.get('/professores');
@@ -19,7 +22,6 @@ export default function TeacherList({ navigation }) {
     }
   }
 
-  // Deleta o professor e recarrega a lista
   async function handleDelete(id) {
     try {
       await api.delete(`/professores/${id}`);
@@ -33,10 +35,10 @@ export default function TeacherList({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Button 
-        title="Cadastrar Novo Professor" 
-        onPress={() => navigation.navigate('CreateTeacher')} 
-      />
+      <TouchableOpacity style={styles.addButton} onPress={() => navigation.navigate('CreateTeacher')}>
+        <Ionicons name="person-add-outline" size={20} color="#fff" />
+        <Text style={styles.addButtonText}>Cadastrar Novo Professor</Text>
+      </TouchableOpacity>
       
       <FlatList
         data={teachers}
@@ -44,16 +46,15 @@ export default function TeacherList({ navigation }) {
         style={{ marginTop: 20 }}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            {/* Assumindo que sua API retorna um campo "nome" */}
             <Text style={styles.name}>{item.nome}</Text>
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('EditTeacher', { id: item.id })}>
-                <Text style={styles.editButton}>Editar</Text>
+                <Ionicons name="create-outline" size={22} color="#85B4D1" />
               </TouchableOpacity>
               
               <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                <Text style={styles.deleteButton}>Excluir</Text>
+                <Ionicons name="trash-outline" size={22} color="#D9ACB5" />
               </TouchableOpacity>
             </View>
           </View>
@@ -64,10 +65,10 @@ export default function TeacherList({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  card: { padding: 15, borderWidth: 1, borderColor: '#eee', marginBottom: 10, borderRadius: 8, backgroundColor: '#f9f9f9' },
-  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#333' },
-  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 20 },
-  editButton: { color: '#007AFF', fontWeight: 'bold', fontSize: 16 },
-  deleteButton: { color: '#FF3B30', fontWeight: 'bold', fontSize: 16 }
+  container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
+  addButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, backgroundColor: '#94C19D', paddingVertical: 12, borderRadius: 10 },
+  addButtonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 10, borderRadius: 10, backgroundColor: '#fff' },
+  name: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#4A4A4A' },
+  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 24 }
 });

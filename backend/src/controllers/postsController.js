@@ -30,6 +30,7 @@ const postsController = {
 
       const result = await pool.query(query, values);
 
+      console.log(`Post "${title}" criado por "${author}"`);
       res.status(201).json(result.rows[0]);
     } catch (error) {
       console.error("Erro ao criar post:", error);
@@ -74,6 +75,7 @@ const postsController = {
           .json({ message: "Postagem não encontrada para atualização." });
       }
 
+      console.log(`Post ID ${id} atualizado → "${title}"`);
       res.status(200).json(result.rows[0]);
     } catch (error) {
       console.error("Erro ao atualizar post:", error);
@@ -111,6 +113,8 @@ const postsController = {
         return res.status(404).json({ message: 'Postagem não encontrada para exclusão.' });
       }
 
+      const { title } = result.rows[0];
+      console.log(`Post "${title}" excluído`);
       res.status(200).json({ message: 'Postagem removida com sucesso.' });
     } catch (error) {
       console.error('Erro ao deletar post:', error);

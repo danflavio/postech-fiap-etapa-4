@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
+import { tablesReady } from './config/db.js';
 import postRouter from './routes/posts.js';
 import rotasProfessores from './routes/professores.js';
 import rotasAlunos from './routes/alunos.js';
@@ -29,6 +30,7 @@ app.use('/professores', rotasProfessores);
 app.use('/alunos', rotasAlunos);
 
 if (process.env.NODE_ENV !== 'test') {
+    await tablesReady;
     app.listen(PORT, '0.0.0.0', () => {
         console.log(`Servidor rodando na porta ${PORT}`);
     });

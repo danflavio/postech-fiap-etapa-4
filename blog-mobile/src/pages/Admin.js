@@ -1,13 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity, Button } from 'react-native';
+import React, { useState, useCallback } from 'react';
+import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useFocusEffect } from '@react-navigation/native';
 import api from '../services/api';
 
 export default function Admin({ navigation }) {
   const [posts, setPosts] = useState([]);
 
-  useEffect(() => {
-    fetchPosts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      fetchPosts();
+    }, [])
+  );
 
   async function fetchPosts() {
     try {
@@ -32,11 +36,19 @@ export default function Admin({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.header}>Painel Administrativo</Text>
       
-      {/* Botões de Gestão organizados aqui */}
       <View style={styles.buttonGroup}>
-        <Button title="Nova Postagem" onPress={() => navigation.navigate('CreatePost')} />
-        <Button title="Professores" color="#28a745" onPress={() => navigation.navigate('TeacherList')} />
-        <Button title="Estudantes" color="#ff9500" onPress={() => navigation.navigate('StudentList')} />
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#85B4D1' }]} onPress={() => navigation.navigate('CreatePost')}>
+          <Ionicons name="add-circle-outline" size={20} color="#fff" />
+          <Text style={styles.buttonText}>Nova Postagem</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#94C19D' }]} onPress={() => navigation.navigate('TeacherList')}>
+          <Ionicons name="people-outline" size={20} color="#fff" />
+          <Text style={styles.buttonText}>Professores</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={[styles.button, { backgroundColor: '#EDC28A' }]} onPress={() => navigation.navigate('StudentList')}>
+          <Ionicons name="school-outline" size={20} color="#fff" />
+          <Text style={styles.buttonText}>Estudantes</Text>
+        </TouchableOpacity>
       </View>
 
       <Text style={styles.subHeader}>Gerenciar Postagens Publicadas</Text>
@@ -50,11 +62,11 @@ export default function Admin({ navigation }) {
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('EditPost', { id: item.id })}>
-                <Text style={styles.editButton}>Editar</Text>
+                <Ionicons name="create-outline" size={22} color="#85B4D1" />
               </TouchableOpacity>
               
               <TouchableOpacity onPress={() => handleDelete(item.id)}>
-                <Text style={styles.deleteButton}>Excluir</Text>
+                <Ionicons name="trash-outline" size={22} color="#D9ACB5" />
               </TouchableOpacity>
             </View>
           </View>
@@ -65,13 +77,13 @@ export default function Admin({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
-  header: { fontSize: 22, fontWeight: 'bold', marginBottom: 15, textAlign: 'center' },
-  subHeader: { fontSize: 16, fontWeight: 'bold', marginTop: 10, marginBottom: 10, color: '#444' },
+  container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
+  header: { fontSize: 22, fontWeight: 'bold', marginBottom: 15, textAlign: 'center', color: '#4A4A4A' },
+  subHeader: { fontSize: 16, fontWeight: '600', marginTop: 10, marginBottom: 10, color: '#6B6B6B' },
   buttonGroup: { gap: 10, marginBottom: 20 },
-  card: { padding: 15, borderWidth: 1, borderColor: '#eee', marginBottom: 10, borderRadius: 8, backgroundColor: '#f9f9f9' },
-  title: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#333' },
-  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 20 },
-  editButton: { color: '#007AFF', fontWeight: 'bold', fontSize: 16 },
-  deleteButton: { color: '#FF3B30', fontWeight: 'bold', fontSize: 16 }
+  button: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, paddingVertical: 12, paddingHorizontal: 20, borderRadius: 10 },
+  buttonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
+  card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 10, borderRadius: 10, backgroundColor: '#fff' },
+  title: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#4A4A4A' },
+  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 24 }
 });
