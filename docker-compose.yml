@@ -1,0 +1,59 @@
+services:
+  app:
+    build: ./backend
+    container_name: blogfiap_api
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
+    ports:
+      - "${PORT:-3000}:${PORT:-3000}"
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    environment:
+      - PORT=${PORT:-3000}
+      - DB_HOST=${DB_HOST_DOCKER:-db}
+      - DB_USER=${DB_USER:-user}
+      - DB_PASSWORD=${DB_PASSWORD:-password}
+      - DB_NAME=${DB_NAME:-blogging_db}
+      - DB_PORT=${DB_PORT:-5432}
+      - NODE_ENV=development
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - tech_net
+
+  db:
+    image: postgres:15-alpine
+    container_name: blogfiap_db
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 256M
+    environment:
+      POSTGRES_USER: ${DB_USER:-user}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-password}
+      POSTGRES_DB: ${DB_NAME:-blogging_db}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - "${DB_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-user} -d ${DB_NAME:-blogging_db}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - tech_net
+
+networks:
+  tech_net:
+    driver: bridge
+
+volumes:
+  pgdata:

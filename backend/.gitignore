@@ -1,0 +1,12 @@
+node_modules/
+coverage/
+*.lcov
+.env
+.env.local
+npm-debug.log*
+.docker-data/
+pgdata/
+.DS_Store
+Thumbs.db
+dist/
+build/

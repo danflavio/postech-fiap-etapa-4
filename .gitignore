@@ -73,6 +73,12 @@ Desktop.ini
 *.tsbuildinfo
 tsconfig.tsbuildinfo
 
+# --- Backend / Testes ---
+coverage/
+*.lcov
+.docker-data/
+pgdata/
+
 # --- Ferramentas diversas ---
 .eslintcache
 .stylelintcache
