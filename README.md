@@ -1,7 +1,6 @@
 # Postech FIAP - Etapa 4 · Blog Acadêmico
 
 > **Curso:** Pós-Tech em Arquitetura de Software · FIAP
-> **Autor:** [Dan Flavio](https://github.com/danflavio)
 
 Aplicação full-stack de blog com **React Native (Expo)** no frontend mobile/web e **Node.js + Express + PostgreSQL** no backend, com autenticação JWT e CRUD completo.
 
