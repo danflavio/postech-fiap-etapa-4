@@ -86,3 +86,10 @@ pgdata/
 .cache/
 .tmp/
 tmp/
+
+# --- OpenCode AI ---
+opencode.json
+tui.json
+.opencode/
+AGENTS.md
+CLAUDE.md

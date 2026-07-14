@@ -2,6 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import postRouter from './routes/posts.js';
+import rotasProfessores from './routes/professores.js';
+import rotasAlunos from './routes/alunos.js';
 
 const app = express();
 const PORT = process.env.PORT || 3010;
@@ -23,8 +25,11 @@ app.get('/', (req, res) => {
     res.send('API do Tech Challenge da FIAP - Etapa 4 rodando com variáveis de ambiente');
 });
 
+app.use('/professores', rotasProfessores);
+app.use('/alunos', rotasAlunos);
+
 if (process.env.NODE_ENV !== 'test') {
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
         console.log(`Servidor rodando na porta ${PORT}`);
     });
 }
