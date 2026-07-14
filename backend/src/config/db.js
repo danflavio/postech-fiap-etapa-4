@@ -44,7 +44,7 @@ async function ensureTables() {
             );
         `);
 
-        const { rows } = await client.query('SELECT COUNT(*) as total FROM professores');
+        const { rows } = await client.query("SELECT COUNT(*) as total FROM professores WHERE email = 'admin@fiap.com.br'");
         if (parseInt(rows[0].total) === 0) {
             const hash = await bcrypt.hash('admin123', 10);
             await client.query(
