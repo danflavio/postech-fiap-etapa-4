@@ -51,7 +51,7 @@ export default function Home({ navigation }) {
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
   topBar: { flexDirection: 'row', justifyContent: 'flex-end', marginBottom: 15 },
-  loginButton: { backgroundColor: '#B5BEC6', paddingVertical: 10, paddingHorizontal: 18, borderRadius: 8 },
+  loginButton: { backgroundColor: '#8B9CC4', paddingVertical: 10, paddingHorizontal: 18, borderRadius: 10 },
   loginButtonText: { color: '#fff', fontWeight: '600', fontSize: 14 },
   input: { borderWidth: 1, borderColor: '#D6CFC7', backgroundColor: '#fff', padding: 12, marginBottom: 20, borderRadius: 10 },
   card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 15, borderRadius: 10, backgroundColor: '#fff' },

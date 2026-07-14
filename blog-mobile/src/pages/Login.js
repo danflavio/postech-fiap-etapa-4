@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
   input: { borderWidth: 1, borderColor: '#D6CFC7', backgroundColor: '#fff', padding: 12, marginBottom: 15, borderRadius: 10 },
   loginButton: { backgroundColor: '#85B4D1', paddingVertical: 14, borderRadius: 10, alignItems: 'center' },
   loginButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' },
-  backButton: { marginTop: 15, paddingVertical: 14, borderRadius: 10, alignItems: 'center', borderWidth: 1, borderColor: '#B5BEC6' },
-  backButtonText: { color: '#6B6B6B', fontSize: 15, fontWeight: '600' }
+  backButton: { marginTop: 15, paddingVertical: 14, borderRadius: 10, alignItems: 'center', borderWidth: 1.5, borderColor: '#8B9CC4' },
+  backButtonText: { color: '#8B9CC4', fontSize: 15, fontWeight: '600' }
 });

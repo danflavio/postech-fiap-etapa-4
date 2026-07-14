@@ -1,70 +1,155 @@
-# Postech FIAP - Etapa 4
+# Postech FIAP - Etapa 4 · Blog Acadêmico
 
-> **Status:** Em desenvolvimento  
-> **Curso:** Pós-Tech FIAP | **Etapa:** 4  
+> **Curso:** Pós-Tech em Arquitetura de Software · FIAP  
 > **Autor:** [Dan Flavio](https://github.com/danflavio)
 
-BlogFIAP — aplicação full-stack de leitura de blogs com **React Native (Expo)** no frontend mobile e **Node.js + Express + PostgreSQL** no backend.
-
----
-
-## Tech Stack
-
-**Mobile:** React Native 0.81 · Expo SDK 54 · TypeScript · Axios  
-**Backend:** Node.js 20 · Express 5 · PostgreSQL 15 · Docker  
-**Testes:** Jest 30 · Supertest 7  
-**Infra:** Docker Compose · GitHub Actions
+Aplicação full-stack de blog com **React Native (Expo)** no frontend mobile/web e **Node.js + Express + PostgreSQL** no backend, orquestrados com Docker Compose.
 
 ---
 
 ## Funcionalidades
 
-- [x] Catálogo de posts com lista e busca
-- [x] Detalhes do post (carregado via API)
-- [x] Criação, edição e exclusão de posts (CRUD via API)
-- [x] Busca por palavra-chave
-- [ ] Autenticação
-- [ ] Comentários
+- Catálogo de posts com busca por palavra-chave
+- Detalhes do post carregados via API
+- CRUD completo de posts (criar, editar, excluir)
+- Painel administrativo com autenticação simulada (usuário/senha)
+- Gestão de professores e estudantes (cadastro, edição, exclusão)
+- Interface responsiva (mobile Android, iOS e web)
 
 ---
 
 ## Pré-requisitos
 
-- Node.js v18+
-- Docker (recomendado para o backend)
-- Expo Go (dispositivo físico) ou emulador
+| Ferramenta | Versão mínima | Para quê |
+|---|---|---|
+| [Node.js](https://nodejs.org) | 18+ | Backend + mobile |
+| [Docker](https://www.docker.com) | 24+ | Executar backend + banco |
+| [Expo Go](https://expo.dev/go) | — | Rodar app no celular |
+
+> No Windows, recomendamos usar o **PowerShell** ou **Git Bash**.
 
 ---
 
-## Execução
-
-### Backend (Docker)
+## Início rápido (Docker)
 
 ```bash
+# 1. Clone o repositório
+git clone https://github.com/danflavio/postech-fiap-etapa-4.git
+cd postech-fiap-etapa-4
+
+# 2. Suba o backend + banco de dados
 docker compose up -d
+
+# 3. Verifique se está rodando
+curl http://localhost:3010/
+# Deve retornar: API do Tech Challenge da FIAP - Etapa 4 rodando...
 ```
 
-A API estará disponível em `http://localhost:3000`.
+O backend estará em `http://localhost:3010` e o PostgreSQL em `localhost:5432`.
 
-### Backend (sem Docker)
+---
 
-```bash
-cd backend
-cp ../.env.example .env  # edite as credenciais do banco
-npm install
-npm start
-```
-
-### Mobile
+## Rodando o mobile (Expo)
 
 ```bash
 cd blog-mobile
-cp .env.example .env
 npm install
+
+# Copie o .env de exemplo
+cp .env.example .env
+```
+
+### Configure o `.env` do mobile
+
+```bash
+# Emulador Android (padrão — já funciona out of the box)
+# NÃO defina EXPO_PUBLIC_API_HOST — o app detecta automaticamente
+
+# Dispositivo físico (Android/iOS via Expo Go)
+# Defina o IP local da máquina que roda o backend:
+EXPO_PUBLIC_API_HOST=http://192.168.1.113
+
+# Porta (padrão 3010)
+EXPO_PUBLIC_API_PORT=3010
+```
+
+> **Como descobrir seu IP:** Windows → `ipconfig` · Mac/Linux → `ifconfig` ou `ip addr`
+
+```bash
+# Inicie o Expo
 npx expo start
 ```
 
-No terminal do Expo, pressione `a` (Android), `i` (iOS) ou `w` (Web).
+Pressione `w` (web), `a` (Android) ou `i` (iOS) no terminal do Expo.
+
+---
+
+## Rodando sem Docker (desenvolvimento local)
+
+### Backend
+
+```bash
+cd backend
+cp .env.example .env   # Ajuste as credenciais do banco
+npm install
+npm start              # Inicia na porta 3010
+```
+
+### Banco de dados
+
+Você precisa de um PostgreSQL rodando localmente com:
+
+- Host: `localhost`
+- Porta: `5432`
+- Usuário: `user`
+- Senha: `password`
+- Database: `blogging_db`
+
+O backend cria as tabelas automaticamente na inicialização.
+
+---
+
+## Autenticação (Admin)
+
+| Campo | Valor |
+|---|---|
+| Usuário | `professor` |
+| Senha | `123456` |
+
+Acesse pela Home → "Login do Professor" ou direto no Expo Go.
+
+---
+
+## API Endpoints
+
+### Posts
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/posts` | Listar todos |
+| `GET` | `/posts/search?q=` | Buscar por termo |
+| `GET` | `/posts/:id` | Detalhes do post |
+| `POST` | `/posts` | Criar post |
+| `PUT` | `/posts/:id` | Atualizar post |
+| `DELETE` | `/posts/:id` | Excluir post |
+
+### Professores
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/professores` | Listar todos |
+| `POST` | `/professores` | Cadastrar |
+| `PUT` | `/professores/:id` | Atualizar |
+| `DELETE` | `/professores/:id` | Excluir |
+
+### Alunos
+
+| Método | Rota | Descrição |
+|---|---|---|
+| `GET` | `/alunos` | Listar todos |
+| `POST` | `/alunos` | Cadastrar |
+| `PUT` | `/alunos/:id` | Atualizar |
+| `DELETE` | `/alunos/:id` | Excluir |
 
 ---
 
@@ -72,62 +157,61 @@ No terminal do Expo, pressione `a` (Android), `i` (iOS) ou `w` (Web).
 
 ```
 postech-fiap-etapa-4/
-├── backend/                  # API REST (Express + PostgreSQL)
+├── backend/
 │   ├── src/
-│   │   ├── index.js          # Entry point
-│   │   ├── config/db.js      # Conexão com PostgreSQL
-│   │   ├── controllers/      # Lógica das rotas
-│   │   └── routes/           # Definição de rotas
-│   ├── tests/                # Testes de integração (Jest)
-│   ├── init.sql              # Schema + seed data
+│   │   ├── index.js              # Entry point do servidor
+│   │   ├── config/db.js          # Pool PostgreSQL + criação automática de tabelas
+│   │   ├── controllers/          # Lógica de negócio (posts)
+│   │   └── routes/               # Rotas (posts, professores, alunos)
+│   ├── sql/
+│   │   └── init.sql              # Schema + seed data (Docker)
+│   ├── tests/                    # Jest + Supertest
+│   ├── .env.example
 │   └── Dockerfile
-├── blog-mobile/              # App mobile (React Native / Expo)
+├── blog-mobile/
 │   ├── src/
-│   │   ├── pages/            # Telas (Home, PostDetail)
-│   │   ├── services/         # Axios client
-│   │   ├── components/       # Componentes reutilizáveis
-│   │   └── context/          # Contextos React
-│   ├── components/           # Componentes de UI
-│   ├── constants/            # Tema (cores, fontes)
-│   └── hooks/                # Hooks personalizados
-├── docker-compose.yml
-└── .env.example
+│   │   ├── pages/                # 11 telas (Home, Admin, CRUD, Login, etc.)
+│   │   ├── services/api.js       # Axios com detecção automática de host
+│   │   ├── components/           # Componentes reutilizáveis
+│   │   └── routes/               # Definição de rotas
+│   ├── App.js                    # Navegação (React Navigation)
+│   └── .env.example
+├── docker-compose.yml            # Backend + PostgreSQL
+└── .env.example                  # Variáveis globais
 ```
-
----
-
-## API Endpoints
-
-| Método | Rota                | Descrição              |
-|--------|---------------------|------------------------|
-| GET    | `/posts`            | Listar todos os posts  |
-| GET    | `/posts/search?q=`  | Buscar posts           |
-| GET    | `/posts/:id`        | Obter post por ID      |
-| POST   | `/posts`            | Criar post             |
-| PUT    | `/posts/:id`        | Atualizar post         |
-| DELETE | `/posts/:id`        | Excluir post           |
 
 ---
 
 ## Scripts
 
-### backend/
+### `backend/`
 
-| Comando                | Descrição                   |
-|------------------------|-----------------------------|
-| `npm start`            | Inicia o servidor           |
-| `npm test`             | Executa testes              |
-| `npm run test:coverage`| Testes com cobertura        |
+| Comando | Descrição |
+|---|---|
+| `npm start` | Inicia o servidor |
+| `npm test` | Executa os testes |
+| `npm run test:coverage` | Testes com relatório de cobertura |
 
-### blog-mobile/
+### `blog-mobile/`
 
-| Comando              | Descrição                     |
-|----------------------|-------------------------------|
-| `npm start`          | Inicia o Expo dev server      |
-| `npm run android`    | Inicia no Android             |
-| `npm run ios`        | Inicia no iOS                 |
-| `npm run web`        | Inicia no navegador           |
-| `npm run lint`       | Executa o linter              |
+| Comando | Descrição |
+|---|---|
+| `npx expo start` | Inicia o dev server |
+| `npx expo start --android` | Abre direto no Android |
+| `npx expo start --ios` | Abre direto no iOS |
+| `npx expo start --web` | Abre no navegador |
+| `npm run lint` | Executa o linter |
+
+---
+
+## Troubleshooting
+
+| Problema | Solução |
+|---|---|
+| **"Network Error" no celular** | Configure `EXPO_PUBLIC_API_HOST` com o IP local da máquina. Celular e PC precisam estar na mesma rede Wi-Fi. |
+| **"500 Internal Server Error"** | Verifique se o PostgreSQL está rodando e as credenciais em `backend/.env` estão corretas. |
+| **Botão não arredondado** | Reinicie o Metro bundler (`npx expo start --clear`). |
+| **Tabela não encontrada** | O backend cria as tabelas automaticamente. Se o erro persistir, recrie o volume: `docker compose down -v && docker compose up -d`. |
 
 ---
 
