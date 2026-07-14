@@ -40,7 +40,7 @@ services:
       POSTGRES_DB: ${DB_NAME:-blogging_db}
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
       - "${DB_PORT:-5432}:5432"
     healthcheck:

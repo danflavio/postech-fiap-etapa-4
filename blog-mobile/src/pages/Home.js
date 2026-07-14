@@ -19,11 +19,9 @@ export default function Home({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <View style={{ marginBottom: 20, gap: 10 }}>
-        <Button title="Criar Nova Postagem" onPress={() => navigation.navigate('CreatePost')} />
-        <Button title="Gerenciar Professores" color="#28a745" onPress={() => navigation.navigate('TeacherList')} />
-        <Button title="Gerenciar Estudantes" color="#ff9500" onPress={() => navigation.navigate('StudentList')} />
-        <Button title="Painel Admin de Posts" color="#dc3545" onPress={() => navigation.navigate('Admin')} />
+      <View style={{ marginBottom: 20 }}>
+        {/* Apenas um botão discreto para a área restrita */}
+        <Button title="Login do Professor" color="#333" onPress={() => navigation.navigate('Login')} />
       </View>
       
       <TextInput style={styles.input} placeholder="Buscar posts..." />
@@ -37,7 +35,7 @@ export default function Home({ navigation }) {
             onPress={() => navigation.navigate('PostDetail', { id: item.id })}
           >
             <Text style={styles.title}>{item.title}</Text>
-            <Text>Autor: {item.author}</Text>
+            <Text style={styles.author}>Autor: {item.author}</Text>
             <Text>{item.content}</Text>
           </TouchableOpacity>
         )}
@@ -47,8 +45,9 @@ export default function Home({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 },
-  input: { borderWidth: 1, padding: 10, marginBottom: 20, borderRadius: 5 },
-  card: { padding: 15, borderWidth: 1, marginBottom: 10, borderRadius: 5 },
-  title: { fontWeight: 'bold', fontSize: 18 }
+  container: { flex: 1, padding: 20, backgroundColor: '#fff' },
+  input: { borderWidth: 1, borderColor: '#ccc', padding: 10, marginBottom: 20, borderRadius: 8 },
+  card: { padding: 15, borderWidth: 1, borderColor: '#eee', marginBottom: 15, borderRadius: 8, backgroundColor: '#f9f9f9' },
+  title: { fontWeight: 'bold', fontSize: 18, marginBottom: 5 },
+  author: { color: '#666', marginBottom: 10 }
 });
