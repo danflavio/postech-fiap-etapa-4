@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AuthProvider, useAuth } from './src/context/AuthContext';
 import Home from './src/pages/Home';
 import PostDetail from './src/pages/PostDetail';
 import CreatePost from './src/pages/CreatePost';
@@ -12,31 +13,57 @@ import EditTeacher from './src/pages/EditTeacher';
 import StudentList from './src/pages/StudentList';
 import CreateStudent from './src/pages/CreateStudent';
 import EditStudent from './src/pages/EditStudent';
-import Admin from './src/pages/Admin'; // Nova importação
+import Admin from './src/pages/Admin';
 
 const Stack = createNativeStackNavigator();
 
-export default function App() {
+function PublicScreens() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+    <Stack.Group>
+      <Stack.Screen name="Home" component={Home} options={{ title: 'Lista de Posts' }} />
+      <Stack.Screen name="PostDetail" component={PostDetail} options={{ title: 'Leitura do Post' }} />
+      <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+    </Stack.Group>
+  );
+}
+
+function ProtectedScreens() {
+  return (
+    <Stack.Group>
+      <Stack.Screen name="Admin" component={Admin} options={{ title: 'Administração' }} />
+      <Stack.Screen name="CreatePost" component={CreatePost} options={{ title: 'Criação de Posts' }} />
+      <Stack.Screen name="EditPost" component={EditPost} options={{ title: 'Edição de Posts' }} />
+      <Stack.Screen name="TeacherList" component={TeacherList} options={{ title: 'Professores' }} />
+      <Stack.Screen name="CreateTeacher" component={CreateTeacher} options={{ title: 'Cadastrar Professor' }} />
+      <Stack.Screen name="EditTeacher" component={EditTeacher} options={{ title: 'Editar Professor' }} />
+      <Stack.Screen name="StudentList" component={StudentList} options={{ title: 'Estudantes' }} />
+      <Stack.Screen name="CreateStudent" component={CreateStudent} options={{ title: 'Cadastrar Estudante' }} />
+      <Stack.Screen name="EditStudent" component={EditStudent} options={{ title: 'Editar Estudante' }} />
+    </Stack.Group>
+  );
+}
+
+function RootNavigator() {
+  const { isAuthenticated } = useAuth();
+
+  return (
+    <Stack.Navigator>
+      <Stack.Group>
         <Stack.Screen name="Home" component={Home} options={{ title: 'Lista de Posts' }} />
         <Stack.Screen name="PostDetail" component={PostDetail} options={{ title: 'Leitura do Post' }} />
-        <Stack.Screen name="CreatePost" component={CreatePost} options={{ title: 'Criação de Posts' }} />
-        <Stack.Screen name="EditPost" component={EditPost} options={{ title: 'Edição de Posts' }} />
-        
-        <Stack.Screen name="TeacherList" component={TeacherList} options={{ title: 'Professores' }} />
-        <Stack.Screen name="CreateTeacher" component={CreateTeacher} options={{ title: 'Cadastrar Professor' }} />
-        <Stack.Screen name="EditTeacher" component={EditTeacher} options={{ title: 'Editar Professor' }} />
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      </Stack.Group>
+      {isAuthenticated && <ProtectedScreens />}
+    </Stack.Navigator>
+  );
+}
 
-        <Stack.Screen name="StudentList" component={StudentList} options={{ title: 'Estudantes' }} />
-        <Stack.Screen name="CreateStudent" component={CreateStudent} options={{ title: 'Cadastrar Estudante' }} />
-        <Stack.Screen name="EditStudent" component={EditStudent} options={{ title: 'Editar Estudante' }} />
-        
-        {/* Nova rota Admin */}
-        <Stack.Screen name="Admin" component={Admin} options={{ title: 'Administração' }} />
-      </Stack.Navigator>
-    </NavigationContainer>
+export default function App() {
+  return (
+    <AuthProvider>
+      <NavigationContainer>
+        <RootNavigator />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

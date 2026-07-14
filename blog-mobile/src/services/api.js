@@ -20,6 +20,14 @@ const api = axios.create({
   timeout: 10000,
 });
 
+export function setAuthToken(token) {
+  if (token) {
+    api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    delete api.defaults.headers.common['Authorization'];
+  }
+}
+
 api.interceptors.response.use(
   response => response,
   error => {

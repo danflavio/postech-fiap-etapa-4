@@ -5,6 +5,7 @@ import api from '../services/api';
 
 export default function Home({ navigation }) {
   const [posts, setPosts] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useFocusEffect(
     useCallback(() => {
@@ -20,6 +21,17 @@ export default function Home({ navigation }) {
     }, [])
   );
 
+  async function handleSearch() {
+    try {
+      const query = searchQuery.trim();
+      const url = query ? `/posts/search?q=${encodeURIComponent(query)}` : '/posts';
+      const response = await api.get(url);
+      setPosts(response.data);
+    } catch (error) {
+      console.error("Erro na busca:", error);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar}>
@@ -28,7 +40,14 @@ export default function Home({ navigation }) {
         </TouchableOpacity>
       </View>
       
-      <TextInput style={styles.input} placeholder="Buscar posts..." />
+      <TextInput
+        style={styles.input}
+        placeholder="Buscar posts..."
+        value={searchQuery}
+        onChangeText={setSearchQuery}
+        onSubmitEditing={handleSearch}
+        returnKeyType="search"
+      />
       
       <FlatList
         data={posts}

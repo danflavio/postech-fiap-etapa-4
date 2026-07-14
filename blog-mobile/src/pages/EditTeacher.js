@@ -6,6 +6,7 @@ export default function EditTeacher({ route, navigation }) {
   const { id } = route.params;
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
 
   useEffect(() => {
     async function fetchTeacher() {
@@ -22,7 +23,9 @@ export default function EditTeacher({ route, navigation }) {
 
   async function handleUpdate() {
     try {
-      await api.put(`/professores/${id}`, { nome, email });
+      const body = { nome, email };
+      if (senha) body.senha = senha;
+      await api.put(`/professores/${id}`, body);
       Alert.alert('Sucesso', 'Professor atualizado com sucesso!');
       navigation.goBack();
     } catch (error) {
@@ -39,6 +42,9 @@ export default function EditTeacher({ route, navigation }) {
       <Text style={styles.label}>E-mail:</Text>
       <TextInput style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
 
+      <Text style={styles.label}>Nova senha (deixe em branco para manter):</Text>
+      <TextInput style={styles.input} value={senha} onChangeText={setSenha} secureTextEntry placeholder="Nova senha" />
+
       <TouchableOpacity style={styles.saveButton} onPress={handleUpdate}>
         <Text style={styles.saveButtonText}>Salvar Alterações</Text>
       </TouchableOpacity>
@@ -48,7 +54,7 @@ export default function EditTeacher({ route, navigation }) {
 
 const styles = StyleSheet.create({
   container: { flex: 1, padding: 20, backgroundColor: '#F5F0EB' },
-  label: { fontSize: 16, marginBottom: 5, fontWeight: '600', color: '#4A4A4A' },
+  label: { fontSize: 15, marginBottom: 5, fontWeight: '600', color: '#4A4A4A' },
   input: { borderWidth: 1, borderColor: '#D6CFC7', backgroundColor: '#fff', padding: 12, marginBottom: 15, borderRadius: 10 },
   saveButton: { backgroundColor: '#94C19D', paddingVertical: 14, borderRadius: 10, alignItems: 'center', marginTop: 5 },
   saveButtonText: { color: '#fff', fontSize: 16, fontWeight: '600' }

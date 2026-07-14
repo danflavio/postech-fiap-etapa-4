@@ -5,10 +5,15 @@ import api from '../services/api';
 export default function CreateTeacher({ navigation }) {
   const [nome, setNome] = useState('');
   const [email, setEmail] = useState('');
+  const [senha, setSenha] = useState('');
 
   async function handleCreate() {
+    if (!nome || !email || !senha) {
+      Alert.alert('Erro', 'Preencha todos os campos.');
+      return;
+    }
     try {
-      await api.post('/professores', { nome, email });
+      await api.post('/professores', { nome, email, senha });
       Alert.alert('Sucesso', 'Professor cadastrado com sucesso!');
       navigation.goBack();
     } catch (error) {
@@ -24,6 +29,9 @@ export default function CreateTeacher({ navigation }) {
 
       <Text style={styles.label}>E-mail:</Text>
       <TextInput style={styles.input} value={email} onChangeText={setEmail} autoCapitalize="none" keyboardType="email-address" />
+
+      <Text style={styles.label}>Senha:</Text>
+      <TextInput style={styles.input} value={senha} onChangeText={setSenha} secureTextEntry />
 
       <TouchableOpacity style={styles.saveButton} onPress={handleCreate}>
         <Text style={styles.saveButtonText}>Salvar Professor</Text>

@@ -2,10 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { View, Text, FlatList, StyleSheet, Alert, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useFocusEffect } from '@react-navigation/native';
+import { useAuth } from '../context/AuthContext';
 import api from '../services/api';
 
 export default function Admin({ navigation }) {
   const [posts, setPosts] = useState([]);
+  const { logout } = useAuth();
 
   useFocusEffect(
     useCallback(() => {
@@ -32,6 +34,11 @@ export default function Admin({ navigation }) {
     }
   }
 
+  function handleLogout() {
+    logout();
+    navigation.reset({ index: 0, routes: [{ name: 'Home' }] });
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Painel Administrativo</Text>
@@ -51,6 +58,11 @@ export default function Admin({ navigation }) {
         </TouchableOpacity>
       </View>
 
+      <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
+        <Ionicons name="log-out-outline" size={18} color="#D9ACB5" />
+        <Text style={styles.logoutText}>Sair</Text>
+      </TouchableOpacity>
+
       <Text style={styles.subHeader}>Gerenciar Postagens Publicadas</Text>
       
       <FlatList
@@ -58,7 +70,9 @@ export default function Admin({ navigation }) {
         keyExtractor={item => String(item.id)}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            <Text style={styles.title}>{item.title}</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('PostDetail', { id: item.id })}>
+              <Text style={styles.title}>{item.title}</Text>
+            </TouchableOpacity>
             
             <View style={styles.buttonContainer}>
               <TouchableOpacity onPress={() => navigation.navigate('EditPost', { id: item.id })}>
@@ -85,5 +99,7 @@ const styles = StyleSheet.create({
   buttonText: { color: '#fff', fontSize: 15, fontWeight: '600' },
   card: { padding: 15, borderWidth: 1, borderColor: '#E8E1D9', marginBottom: 10, borderRadius: 10, backgroundColor: '#fff' },
   title: { fontSize: 18, fontWeight: 'bold', marginBottom: 15, color: '#4A4A4A' },
-  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 24 }
+  buttonContainer: { flexDirection: 'row', justifyContent: 'flex-end', gap: 24 },
+  logoutButton: { flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 6, marginBottom: 10 },
+  logoutText: { color: '#D9ACB5', fontWeight: '600', fontSize: 15 }
 });

@@ -1,4 +1,5 @@
 import pg from 'pg';
+import bcrypt from 'bcryptjs';
 import 'dotenv/config';
 
 const { Pool } = pg;
@@ -28,8 +29,12 @@ async function ensureTables() {
             CREATE TABLE IF NOT EXISTS professores (
                 id SERIAL PRIMARY KEY,
                 nome VARCHAR(100) NOT NULL,
-                email VARCHAR(100) NOT NULL
+                email VARCHAR(100) NOT NULL,
+                senha VARCHAR(255) DEFAULT ''
             );
+        `);
+        await client.query(`
+            ALTER TABLE professores ADD COLUMN IF NOT EXISTS senha VARCHAR(255) DEFAULT '';
         `);
         await client.query(`
             CREATE TABLE IF NOT EXISTS alunos (
@@ -38,6 +43,16 @@ async function ensureTables() {
                 email VARCHAR(100) NOT NULL
             );
         `);
+
+        const { rows } = await client.query('SELECT COUNT(*) as total FROM professores');
+        if (parseInt(rows[0].total) === 0) {
+            const hash = await bcrypt.hash('admin123', 10);
+            await client.query(
+                'INSERT INTO professores (nome, email, senha) VALUES ($1, $2, $3)',
+                ['Administrador', 'admin@fiap.com.br', hash]
+            );
+            console.log('Seed: admin@fiap.com.br / admin123');
+        }
     } finally {
         client.release();
     }

@@ -2,6 +2,8 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { tablesReady } from './config/db.js';
+import { verificarToken } from './middleware/auth.js';
+import authRouter from './routes/auth.js';
 import postRouter from './routes/posts.js';
 import rotasProfessores from './routes/professores.js';
 import rotasAlunos from './routes/alunos.js';
@@ -20,14 +22,15 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+app.use('/auth', authRouter);
 app.use('/posts', postRouter);
+app.use('/professores', verificarToken, rotasProfessores);
+app.use('/alunos', verificarToken, rotasAlunos);
 
 app.get('/', (req, res) => {
     res.send('API do Tech Challenge da FIAP - Etapa 4 rodando com variáveis de ambiente');
 });
-
-app.use('/professores', rotasProfessores);
-app.use('/alunos', rotasAlunos);
 
 if (process.env.NODE_ENV !== 'test') {
     await tablesReady;
